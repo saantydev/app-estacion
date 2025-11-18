@@ -159,7 +159,8 @@ function crearGraficos() {
                     legend: { display: false },
                     tooltip: { enabled: false }
                 },
-                cutout: '75%'
+                cutout: '75%',
+                animation: false
             }
         });
     }
@@ -183,7 +184,8 @@ function crearGraficos() {
                     legend: { display: false },
                     tooltip: { enabled: false }
                 },
-                cutout: '75%'
+                cutout: '75%',
+                animation: false
             }
         });
     }
@@ -269,7 +271,8 @@ function crearGraficos() {
                     legend: { display: false },
                     tooltip: { enabled: false }
                 },
-                cutout: '75%'
+                cutout: '75%',
+                animation: false
             }
         });
     }

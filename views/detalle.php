@@ -21,27 +21,37 @@ $content = '
         <div class="graficos-container">
             <div class="grafico-card">
                 <h3>🌡️ Temperatura</h3>
-                <canvas id="temperaturaChart"></canvas>
+                <div class="chart-container">
+                    <canvas id="temperaturaChart"></canvas>
+                </div>
                 <div class="valor-actual" id="tempValor">--°C</div>
             </div>
             <div class="grafico-card">
                 <h3>💧 Humedad</h3>
-                <canvas id="humedadChart"></canvas>
+                <div class="chart-container">
+                    <canvas id="humedadChart"></canvas>
+                </div>
                 <div class="valor-actual" id="humedadValor">--%</div>
             </div>
             <div class="grafico-card">
                 <h3>💨 Viento</h3>
-                <canvas id="vientoChart"></canvas>
+                <div class="chart-container">
+                    <canvas id="vientoChart"></canvas>
+                </div>
                 <div class="valor-actual" id="vientoValor">-- km/h</div>
             </div>
             <div class="grafico-card">
                 <h3>🌪️ Presión</h3>
-                <canvas id="presionChart"></canvas>
+                <div class="chart-container">
+                    <canvas id="presionChart"></canvas>
+                </div>
                 <div class="valor-actual" id="presionValor">-- hPa</div>
             </div>
             <div class="grafico-card">
                 <h3>🔥 Riesgo Incendio</h3>
-                <canvas id="incendioChart"></canvas>
+                <div class="chart-container">
+                    <canvas id="incendioChart"></canvas>
+                </div>
                 <div class="valor-actual" id="incendioValor">--%</div>
             </div>
         </div>
