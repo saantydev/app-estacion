@@ -111,6 +111,191 @@ function verDetalle(chipid) {
     window.location.href = `index.php?url=detalle/${chipid}`;
 }
 
+// Variables globales para los gráficos
+let charts = {};
+let updateInterval;
+
+// Función para generar datos simulados
+function generarDatosSimulados() {
+    return {
+        temperatura: Math.round((Math.random() * 20 + 15) * 10) / 10, // 15-35°C
+        humedad: Math.round(Math.random() * 60 + 30), // 30-90%
+        viento: Math.round((Math.random() * 25 + 5) * 10) / 10, // 5-30 km/h
+        presion: Math.round((Math.random() * 50 + 1000) * 10) / 10, // 1000-1050 hPa
+        incendio: Math.round(Math.random() * 100) // 0-100%
+    };
+}
+
+// Función para crear gráficos
+function crearGraficos() {
+    const datos = generarDatosSimulados();
+    
+    // Gráfico de Temperatura
+    const tempCtx = document.getElementById('temperaturaChart');
+    if (tempCtx) {
+        charts.temperatura = new Chart(tempCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [datos.temperatura, 50 - datos.temperatura],
+                    backgroundColor: ['#ff6b6b', 'rgba(255,255,255,0.1)'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+    
+    // Gráfico de Humedad
+    const humCtx = document.getElementById('humedadChart');
+    if (humCtx) {
+        charts.humedad = new Chart(humCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [datos.humedad, 100 - datos.humedad],
+                    backgroundColor: ['#4ecdc4', 'rgba(255,255,255,0.1)'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+    
+    // Gráfico de Viento
+    const vientoCtx = document.getElementById('vientoChart');
+    if (vientoCtx) {
+        charts.viento = new Chart(vientoCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Viento'],
+                datasets: [{
+                    data: [datos.viento],
+                    backgroundColor: ['#45b7aa'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 30,
+                        display: false
+                    },
+                    x: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    
+    // Gráfico de Presión
+    const presionCtx = document.getElementById('presionChart');
+    if (presionCtx) {
+        charts.presion = new Chart(presionCtx, {
+            type: 'line',
+            data: {
+                labels: ['1', '2', '3', '4', '5'],
+                datasets: [{
+                    data: [datos.presion, datos.presion + 2, datos.presion - 1, datos.presion + 1, datos.presion],
+                    borderColor: '#ffd93d',
+                    backgroundColor: 'rgba(255, 217, 61, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { display: false },
+                    x: { display: false }
+                }
+            }
+        });
+    }
+    
+    // Gráfico de Riesgo de Incendio
+    const incendioCtx = document.getElementById('incendioChart');
+    if (incendioCtx) {
+        charts.incendio = new Chart(incendioCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [datos.incendio, 100 - datos.incendio],
+                    backgroundColor: ['#ff9f43', 'rgba(255,255,255,0.1)'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+}
+
+// Función para actualizar gráficos
+function actualizarGraficos() {
+    const datos = generarDatosSimulados();
+    
+    if (charts.temperatura) {
+        charts.temperatura.data.datasets[0].data = [datos.temperatura, 50 - datos.temperatura];
+        charts.temperatura.update('none');
+    }
+    
+    if (charts.humedad) {
+        charts.humedad.data.datasets[0].data = [datos.humedad, 100 - datos.humedad];
+        charts.humedad.update('none');
+    }
+    
+    if (charts.viento) {
+        charts.viento.data.datasets[0].data = [datos.viento];
+        charts.viento.update('none');
+    }
+    
+    if (charts.presion) {
+        const nuevosDatos = [datos.presion, datos.presion + 2, datos.presion - 1, datos.presion + 1, datos.presion];
+        charts.presion.data.datasets[0].data = nuevosDatos;
+        charts.presion.update('none');
+    }
+    
+    if (charts.incendio) {
+        charts.incendio.data.datasets[0].data = [datos.incendio, 100 - datos.incendio];
+        charts.incendio.update('none');
+    }
+}
+
 // Inicialización según la página
 document.addEventListener('DOMContentLoaded', function() {
     // Si estamos en el panel, cargar estaciones
@@ -121,5 +306,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Si estamos en detalle y hay chipid, cargar detalle
     if (typeof chipid !== 'undefined' && chipid) {
         cargarDetalleEstacion(chipid);
+        
+        // Crear gráficos después de cargar el detalle
+        setTimeout(() => {
+            crearGraficos();
+            
+            // Actualizar cada 60 segundos
+            updateInterval = setInterval(actualizarGraficos, 60000);
+        }, 1000);
+    }
+});
+
+// Limpiar intervalo al salir de la página
+window.addEventListener('beforeunload', function() {
+    if (updateInterval) {
+        clearInterval(updateInterval);
     }
 });

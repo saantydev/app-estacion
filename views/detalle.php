@@ -17,6 +17,29 @@ $content = '
                 <p id="estacionChipid">' . htmlspecialchars($chipid) . '</p>
             </div>
         </div>
+        
+        <div class="graficos-container">
+            <div class="grafico-card">
+                <h3>🌡️ Temperatura</h3>
+                <canvas id="temperaturaChart"></canvas>
+            </div>
+            <div class="grafico-card">
+                <h3>💧 Humedad</h3>
+                <canvas id="humedadChart"></canvas>
+            </div>
+            <div class="grafico-card">
+                <h3>💨 Viento</h3>
+                <canvas id="vientoChart"></canvas>
+            </div>
+            <div class="grafico-card">
+                <h3>🌪️ Presión Atmosférica</h3>
+                <canvas id="presionChart"></canvas>
+            </div>
+            <div class="grafico-card">
+                <h3>🔥 Riesgo de Incendio</h3>
+                <canvas id="incendioChart"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 
