@@ -11,62 +11,46 @@ const estacionesData = [
 ];
 
 // Función para cargar estaciones en el panel
-async function cargarEstaciones() {
-    try {
-        const grid = document.getElementById('estacionesGrid');
-        const template = document.getElementById('estacionTemplate');
-        const loading = document.getElementById('loading');
+function cargarEstaciones() {
+    const grid = document.getElementById('estacionesGrid');
+    const template = document.getElementById('estacionTemplate');
+    const loading = document.getElementById('loading');
+    
+    if (grid && template) {
+        loading.style.display = 'none';
         
-        if (grid && template) {
-            loading.style.display = 'none';
+        estacionesData.forEach(estacion => {
+            const clone = template.content.cloneNode(true);
             
-            estacionesData.forEach(estacion => {
-                const clone = template.content.cloneNode(true);
-                
-                clone.querySelector('.apodo').textContent = estacion.apodo;
-                clone.querySelector('.ubicacion').textContent = estacion.ubicacion;
-                clone.querySelector('.contador-visitas').textContent = estacion.visitas;
-                clone.querySelector('.btn-detalle').dataset.chipid = estacion.chipid;
-                
-                grid.appendChild(clone);
-            });
-        }
-    } catch (error) {
-        console.error('Error al cargar estaciones:', error);
-        const loading = document.getElementById('loading');
-        if (loading) {
-            loading.textContent = 'Error al cargar las estaciones';
-        }
+            clone.querySelector('.apodo').textContent = estacion.apodo;
+            clone.querySelector('.ubicacion').textContent = estacion.ubicacion;
+            clone.querySelector('.contador-visitas').textContent = estacion.visitas;
+            clone.querySelector('.btn-detalle').dataset.chipid = estacion.chipid;
+            
+            grid.appendChild(clone);
+        });
     }
 }
 
 // Función para cargar detalle de estación
-async function cargarDetalleEstacion(chipid) {
-    try {
-        const estacion = estacionesData.find(e => e.chipid === chipid);
+function cargarDetalleEstacion(chipid) {
+    const estacion = estacionesData.find(e => e.chipid === chipid);
+    
+    const loading = document.getElementById('loading');
+    const detalle = document.getElementById('estacionDetalle');
+    
+    if (loading && detalle) {
+        loading.style.display = 'none';
+        detalle.style.display = 'block';
         
-        const loading = document.getElementById('loading');
-        const detalle = document.getElementById('estacionDetalle');
-        
-        if (loading && detalle) {
-            loading.style.display = 'none';
-            detalle.style.display = 'block';
-            
-            if (estacion) {
-                document.getElementById('estacionApodo').textContent = estacion.apodo;
-                document.getElementById('estacionUbicacion').textContent = estacion.ubicacion;
-                document.getElementById('estacionChipid').textContent = chipid;
-            } else {
-                document.getElementById('estacionApodo').textContent = 'Estación no encontrada';
-                document.getElementById('estacionUbicacion').textContent = 'No disponible';
-                document.getElementById('estacionChipid').textContent = chipid;
-            }
-        }
-    } catch (error) {
-        console.error('Error al cargar detalle:', error);
-        const loading = document.getElementById('loading');
-        if (loading) {
-            loading.textContent = 'Error al cargar el detalle de la estación';
+        if (estacion) {
+            document.getElementById('estacionApodo').textContent = estacion.apodo;
+            document.getElementById('estacionUbicacion').textContent = estacion.ubicacion;
+            document.getElementById('estacionChipid').textContent = chipid;
+        } else {
+            document.getElementById('estacionApodo').textContent = 'Estación no encontrada';
+            document.getElementById('estacionUbicacion').textContent = 'No disponible';
+            document.getElementById('estacionChipid').textContent = chipid;
         }
     }
 }
