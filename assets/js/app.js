@@ -126,9 +126,19 @@ function generarDatosSimulados() {
     };
 }
 
+// Función para actualizar valores en pantalla
+function actualizarValores(datos) {
+    document.getElementById('tempValor').textContent = `${datos.temperatura}°C`;
+    document.getElementById('humedadValor').textContent = `${datos.humedad}%`;
+    document.getElementById('vientoValor').textContent = `${datos.viento} km/h`;
+    document.getElementById('presionValor').textContent = `${datos.presion} hPa`;
+    document.getElementById('incendioValor').textContent = `${datos.incendio}%`;
+}
+
 // Función para crear gráficos
 function crearGraficos() {
     const datos = generarDatosSimulados();
+    actualizarValores(datos);
     
     // Gráfico de Temperatura
     const tempCtx = document.getElementById('temperaturaChart');
@@ -149,7 +159,7 @@ function crearGraficos() {
                     legend: { display: false },
                     tooltip: { enabled: false }
                 },
-                cutout: '70%'
+                cutout: '75%'
             }
         });
     }
@@ -173,7 +183,7 @@ function crearGraficos() {
                     legend: { display: false },
                     tooltip: { enabled: false }
                 },
-                cutout: '70%'
+                cutout: '75%'
             }
         });
     }
@@ -259,7 +269,7 @@ function crearGraficos() {
                     legend: { display: false },
                     tooltip: { enabled: false }
                 },
-                cutout: '70%'
+                cutout: '75%'
             }
         });
     }
@@ -268,6 +278,7 @@ function crearGraficos() {
 // Función para actualizar gráficos
 function actualizarGraficos() {
     const datos = generarDatosSimulados();
+    actualizarValores(datos);
     
     if (charts.temperatura) {
         charts.temperatura.data.datasets[0].data = [datos.temperatura, 50 - datos.temperatura];
