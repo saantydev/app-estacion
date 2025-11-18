@@ -9,7 +9,7 @@
 <body>
     <header>
         <nav>
-            <h1><a href="<?= BASE_URL ?>">🌡️ App Estación</a></h1>
+            <h1><a href="index.php">🌡️ App Estación</a></h1>
         </nav>
     </header>
     

@@ -87,7 +87,7 @@ function cargarDetalleEstacion(chipid) {
 
 // Función para navegar al detalle
 function verDetalle(chipid) {
-    window.location.href = `detalle/${chipid}`;
+    window.location.href = `index.php?url=detalle/${chipid}`;
 }
 
 // Inicialización según la página

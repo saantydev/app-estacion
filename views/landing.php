@@ -21,7 +21,7 @@ $content = '
                 <p>Disponible desde cualquier dispositivo</p>
             </div>
         </div>
-        <a href="panel" class="btn-primary">Ver Panel de Estaciones</a>
+        <a href="index.php?url=panel" class="btn-primary">Ver Panel de Estaciones</a>
     </div>
 </div>
 ';
