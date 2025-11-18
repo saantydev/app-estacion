@@ -56,31 +56,52 @@ async function cargarEstaciones() {
     }
 }
 
-// Función para cargar detalle de estación
-function cargarDetalleEstacion(chipid) {
+// Función para cargar detalle de estación desde la API real
+async function cargarDetalleEstacion(chipid) {
     const loading = document.getElementById('loading');
     const detalle = document.getElementById('estacionDetalle');
     
-    const estacionesLocal = [
-        { chipid: '713630', apodo: 'MattLab I', ubicacion: 'Buenos Aires, Tortuguitas' },
-        { chipid: '1726113', apodo: 'Villa Giardino', ubicacion: 'Córdoba, Villa Giardino' },
-        { chipid: '3099001', apodo: 'Expotécnica E.E.S.T. N°3', ubicacion: 'Buenos Aires, Tortuguitas' },
-        { chipid: '3973796', apodo: 'MattLab II', ubicacion: 'Buenos Aires, Tortuguitas' },
-        { chipid: '11214452', apodo: 'AEROCLUB LA CUMBRE', ubicacion: 'Córdoba, Aeroclub La Cumbre' }
-    ];
-    
-    const estacion = estacionesLocal.find(e => e.chipid === chipid);
-    
-    loading.style.display = 'none';
-    detalle.style.display = 'block';
-    
-    if (estacion) {
-        document.getElementById('estacionApodo').textContent = estacion.apodo;
-        document.getElementById('estacionUbicacion').textContent = estacion.ubicacion;
+    try {
+        const response = await fetch(`https://mattprofe.com.ar/proyectos/app-estacion/panel.php?chipid=${chipid}`);
+        const html = await response.text();
+        
+        // Extraer datos del HTML usando regex
+        const apodoMatch = html.match(/<h2[^>]*>([^<]+)<\/h2>/);
+        const ubicacionMatch = html.match(/<p[^>]*class="[^"]*ubicacion[^"]*"[^>]*>([^<]+)<\/p>/) || 
+                              html.match(/<span[^>]*>([^<]*(?:Buenos Aires|Córdoba)[^<]*)<\/span>/);
+        
+        loading.style.display = 'none';
+        detalle.style.display = 'block';
+        
+        if (apodoMatch) {
+            document.getElementById('estacionApodo').textContent = apodoMatch[1].trim();
+        }
+        
+        if (ubicacionMatch) {
+            document.getElementById('estacionUbicacion').textContent = ubicacionMatch[1].trim();
+        }
+        
         document.getElementById('estacionChipid').textContent = chipid;
-    } else {
-        document.getElementById('estacionApodo').textContent = 'Estación no encontrada';
-        document.getElementById('estacionUbicacion').textContent = 'No disponible';
+        
+    } catch (error) {
+        console.error('Error al cargar desde API:', error);
+        loading.style.display = 'none';
+        detalle.style.display = 'block';
+        
+        // Fallback con datos conocidos
+        const fallback = {
+            '713630': { apodo: 'MattLab I', ubicacion: 'Buenos Aires, Tortuguitas' },
+            '1726113': { apodo: 'Villa Giardino', ubicacion: 'Córdoba, Villa Giardino' },
+            '3099001': { apodo: 'Expotécnica E.E.S.T. N°3', ubicacion: 'Buenos Aires, Tortuguitas' },
+            '3973796': { apodo: 'MattLab II', ubicacion: 'Buenos Aires, Tortuguitas' },
+            '11214452': { apodo: 'AEROCLUB LA CUMBRE', ubicacion: 'Córdoba, Aeroclub La Cumbre' }
+        };
+        
+        const estacion = fallback[chipid];
+        if (estacion) {
+            document.getElementById('estacionApodo').textContent = estacion.apodo;
+            document.getElementById('estacionUbicacion').textContent = estacion.ubicacion;
+        }
         document.getElementById('estacionChipid').textContent = chipid;
     }
 }
