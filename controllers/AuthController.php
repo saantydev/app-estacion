@@ -205,6 +205,15 @@ class AuthController extends BaseController {
     }
     
     public function logout() {
+        // Si es admin, redirigir a admin login
+        if (isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] === true) {
+            unset($_SESSION['admin_logged']);
+            unset($_SESSION['admin_username']);
+            header('Location: index.php?url=administrator');
+            exit;
+        }
+        
+        // Si es usuario normal
         session_destroy();
         header('Location: index.php?url=login');
         exit;

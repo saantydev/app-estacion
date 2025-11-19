@@ -11,6 +11,13 @@
     <header>
         <nav>
             <h1><a href="index.php">🌡️ App Estación</a></h1>
+            <div class="nav-actions">
+                <?php if (isset($_SESSION['user_id']) || isset($_SESSION['admin_logged'])): ?>
+                    <a href="index.php?url=logout" class="btn-logout-header">Cerrar Sesión</a>
+                <?php else: ?>
+                    <a href="index.php?url=login" class="btn-login-header">Iniciar Sesión</a>
+                <?php endif; ?>
+            </div>
         </nav>
     </header>
     

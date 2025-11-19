@@ -21,10 +21,11 @@ class AdminController extends BaseController {
             
             if ($username === 'admin-estacion' && $password === 'admin1234') {
                 $_SESSION['admin_logged'] = true;
+                $_SESSION['admin_username'] = 'admin-estacion';
                 header('Location: index.php?url=administrator');
                 exit;
             } else {
-                $this->render('admin_login', ['error' => 'Credenciales incorrectas']);
+                $this->render('admin_login', ['error' => 'Credenciales de administrador incorrectas']);
                 return;
             }
         }
@@ -45,7 +46,7 @@ class AdminController extends BaseController {
     
     public function map() {
         if (!$this->isAdminLoggedIn()) {
-            header('Location: index.php?url=panel');
+            header('Location: index.php?url=administrator');
             exit;
         }
         
@@ -54,12 +55,14 @@ class AdminController extends BaseController {
     
     public function adminLogout() {
         unset($_SESSION['admin_logged']);
+        unset($_SESSION['admin_username']);
         header('Location: index.php?url=administrator');
         exit;
     }
     
     private function isAdminLoggedIn() {
-        return isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] === true;
+        return isset($_SESSION['admin_logged']) && $_SESSION['admin_logged'] === true && 
+               isset($_SESSION['admin_username']) && $_SESSION['admin_username'] === 'admin-estacion';
     }
     
     private function getTotalUsers() {

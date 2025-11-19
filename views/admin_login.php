@@ -9,7 +9,12 @@
 <body>
     <div class="auth-container">
         <div class="auth-form">
-            <h2>Administrador</h2>
+            <h2>Panel de Administración</h2>
+            
+            <div class="admin-info">
+                <p>Acceso exclusivo para administradores</p>
+                <small>Usuario: <strong>admin-estacion</strong></small>
+            </div>
             
             <?php if (isset($error)): ?>
                 <div class="error"><?= htmlspecialchars($error) ?></div>
