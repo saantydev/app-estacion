@@ -1,4 +1,4 @@
-CREATE TABLE usuarios__app_estacion (
+CREATE TABLE app_estacion__usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     token VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,

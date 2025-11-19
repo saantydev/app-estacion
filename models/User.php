@@ -19,19 +19,19 @@ class User {
     }
     
     public function findByEmail($email) {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios__app_estacion WHERE email = ?");
+        $stmt = $this->db->prepare("SELECT * FROM app_estacion__usuarios WHERE email = ?");
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     public function findByToken($token) {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios__app_estacion WHERE token = ?");
+        $stmt = $this->db->prepare("SELECT * FROM app_estacion__usuarios WHERE token = ?");
         $stmt->execute([$token]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     public function findByTokenAction($token_action) {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios__app_estacion WHERE token_action = ?");
+        $stmt = $this->db->prepare("SELECT * FROM app_estacion__usuarios WHERE token_action = ?");
         $stmt->execute([$token_action]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -41,24 +41,24 @@ class User {
         $token_action = $this->generateToken();
         $hashedPassword = $this->hashPassword($password);
         
-        $stmt = $this->db->prepare("INSERT INTO usuarios__app_estacion (token, email, nombres, contraseña, token_action) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO app_estacion__usuarios (token, email, nombres, contraseña, token_action) VALUES (?, ?, ?, ?, ?)");
         return $stmt->execute([$token, $email, $nombres, $hashedPassword, $token_action]);
     }
     
     public function activate($token_action) {
-        $stmt = $this->db->prepare("UPDATE usuarios__app_estacion SET activo = 1, token_action = NULL, active_date = NOW() WHERE token_action = ?");
+        $stmt = $this->db->prepare("UPDATE app_estacion__usuarios SET activo = 1, token_action = NULL, active_date = NOW() WHERE token_action = ?");
         return $stmt->execute([$token_action]);
     }
     
     public function block($token) {
         $token_action = $this->generateToken();
-        $stmt = $this->db->prepare("UPDATE usuarios__app_estacion SET bloqueado = 1, token_action = ?, blocked_date = NOW() WHERE token = ?");
+        $stmt = $this->db->prepare("UPDATE app_estacion__usuarios SET bloqueado = 1, token_action = ?, blocked_date = NOW() WHERE token = ?");
         return $stmt->execute([$token_action, $token]);
     }
     
     public function setRecovery($email) {
         $token_action = $this->generateToken();
-        $stmt = $this->db->prepare("UPDATE usuarios__app_estacion SET recupero = 1, token_action = ?, recover_date = NOW() WHERE email = ?");
+        $stmt = $this->db->prepare("UPDATE app_estacion__usuarios SET recupero = 1, token_action = ?, recover_date = NOW() WHERE email = ?");
         if ($stmt->execute([$token_action, $email])) {
             return $token_action;
         }
@@ -67,7 +67,7 @@ class User {
     
     public function resetPassword($token_action, $newPassword) {
         $hashedPassword = $this->hashPassword($newPassword);
-        $stmt = $this->db->prepare("UPDATE usuarios__app_estacion SET contraseña = ?, token_action = NULL, bloqueado = 0, recupero = 0 WHERE token_action = ?");
+        $stmt = $this->db->prepare("UPDATE app_estacion__usuarios SET contraseña = ?, token_action = NULL, bloqueado = 0, recupero = 0 WHERE token_action = ?");
         return $stmt->execute([$hashedPassword, $token_action]);
     }
     

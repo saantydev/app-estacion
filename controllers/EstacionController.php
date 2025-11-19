@@ -1,7 +1,15 @@
 <?php
 require_once 'controllers/BaseController.php';
+require_once 'models/Tracker.php';
 
 class EstacionController extends BaseController {
+    private $tracker;
+    
+    public function __construct($database = null) {
+        if ($database) {
+            $this->tracker = new Tracker($database);
+        }
+    }
     
     public function landing() {
         $this->render('landing', [
@@ -10,6 +18,11 @@ class EstacionController extends BaseController {
     }
 
     public function panel() {
+        // Trackear cliente
+        if ($this->tracker) {
+            $this->tracker->trackClient();
+        }
+        
         $this->render('panel', [
             'title' => 'Panel de Estaciones'
         ]);

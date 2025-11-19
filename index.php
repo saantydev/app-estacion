@@ -3,6 +3,7 @@ session_start();
 require_once 'env.php';
 require_once 'controllers/EstacionController.php';
 require_once 'controllers/AuthController.php';
+require_once 'controllers/AdminController.php';
 
 // Configurar conexión a base de datos
 try {
@@ -22,12 +23,12 @@ switch ($segments[0]) {
         $controller->landing();
         break;
     case 'panel':
-        $controller = new EstacionController();
+        $controller = new EstacionController($pdo);
         $controller->panel();
         break;
     case 'detalle':
         $chipid = $segments[1] ?? '';
-        $controller = new EstacionController();
+        $controller = new EstacionController($pdo);
         $controller->detalle($chipid);
         break;
     case 'login':
@@ -61,8 +62,20 @@ switch ($segments[0]) {
         $controller = new AuthController($pdo);
         $controller->logout();
         break;
+    case 'administrator':
+        $controller = new AdminController($pdo);
+        $controller->administrator();
+        break;
+    case 'map':
+        $controller = new AdminController($pdo);
+        $controller->map();
+        break;
+    case 'admin-logout':
+        $controller = new AdminController($pdo);
+        $controller->adminLogout();
+        break;
     default:
-        $controller = new EstacionController();
+        $controller = new EstacionController($pdo);
         $controller->landing();
         break;
 }
